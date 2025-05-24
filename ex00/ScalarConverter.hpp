@@ -2,6 +2,7 @@
 # define SCALARCONVERTER_HPP
 
 # include <iostream>
+# include <cstdlib>
 
 class ScalarConverter
 {
@@ -21,6 +22,9 @@ class ScalarConverter
 		int		getInt();
 		float	getFloat();
 		double	getDouble();
+		int		isInt(std::string literal);
+		int		isFloat(std::string literal);
+		int		isChar(std::string literal);
 };
 
 #endif
