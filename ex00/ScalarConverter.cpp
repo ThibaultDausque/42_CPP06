@@ -30,11 +30,11 @@ ScalarConverter&	ScalarConverter::operator=(const ScalarConverter& src)
 	return *this;
 }
 
-int	ScalarConverter::isInt(std::string literal)
+int	ScalarConverter::isInt(std::string& literal)
 {
 	if (literal.empty())
 		return 0;
-	for (int i = 0; i < literal.size(); i++)
+	for (size_t i = 0; i < literal.size(); i++)
 	{
 		if (literal[i] < 30 || literal[i] > 57)
 			return 0;
@@ -51,27 +51,27 @@ int	ScalarConverter::isChar(std::string& literal)
 	return 1;
 }
 
-char	ScalarConverter::getChar()
+char	ScalarConverter::getChar() const
 {
 	return this->a;
 }
 
-int	ScalarConverter::getInt()
+int	ScalarConverter::getInt() const
 {
 	return this->b;
 }
 
-float	ScalarConverter::getFloat()
+float	ScalarConverter::getFloat() const
 {
 	return this->c;
 }
 
-double	ScalarConverter::getDouble()
+double	ScalarConverter::getDouble() const
 {
 	return this->d;
 }
 
-static void	ScalarConverter::convert(const std::string& literal)
+void	ScalarConverter::convert(const std::string& literal)
 {
 	if (isChar(literal))
 	{
