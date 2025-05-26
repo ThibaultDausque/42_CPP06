@@ -3,6 +3,7 @@
 
 # include <iostream>
 # include <cstdlib>
+# include <iomanip>
 
 class ScalarConverter
 {
@@ -22,9 +23,9 @@ class ScalarConverter
 		int		getInt() const;
 		float	getFloat() const;
 		double	getDouble() const;
-		int		isInt(std::string& literal);
-		int		isFloat(std::string& literal);
-		int		isChar(std::string& literal);
+		int		isIntFloatDouble(const std::string& literal);
+		int		isChar(const std::string& literal);
+		int		pseudoLiterals(const std::string& literal);
 };
 
 #endif
