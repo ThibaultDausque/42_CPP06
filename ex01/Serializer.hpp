@@ -3,13 +3,24 @@
 
 # include <cstdint>
 # include <iostream>
-# include "Data.hpp"
+
+typedef struct Data
+{
+	int		age;
+	std::string	name;
+}	Data;
 
 class Serializer
 {
+	private:
+		Serializer();
+		Serializer(const Serializer& cpy);
+
 	public:
-		uintptr_t	serialize(Data *ptr);
-		Data*	deserialize(uintptr_t raw);
-}
+		Serializer&	operator=(const Serializer& src);
+		~Serializer();
+		static uintptr_t	serialize(Data *ptr);
+		static Data*	deserialize(uintptr_t raw);
+};
 
 #endif
