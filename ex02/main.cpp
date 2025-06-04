@@ -3,9 +3,11 @@
 #include "C.hpp"
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
 
 Base*	generate(void)
 {
+	std::srand(std::clock());
 	int		random;
 
 	random = std::rand() % 3;
@@ -47,26 +49,43 @@ void	identify(Base& p)
 	i = 0;
 	while (i < 3)
 	{
+		void	*foo = NULL;
+		Base	&unused = (Base &)foo;
 		try
 		{
 			if (i == 0)
+			{
+				unused = dynamic_cast<A&>(p);
 				std::cout << "Type: A" << std::endl;
+			}
+			else if (i == 1)
+			{
+				unused = dynamic_cast<B&>(p);
+				std::cout << "Type: B" << std::endl;
+			}
+			else if (i == 2)
+			{
+				unused = dynamic_cast<C&>(p);
+				std::cout << "Type: C" << std::endl;
+			}
 		}
-		catch (std::bad_cast& e)
+		catch (const std::exception& e)
 		{
-			std::cout << "error" << std::endl;
+			std::cout << "Type error" << std::endl;
 		}
+		i++;
 	}
 }
 
 int	main()
 {
 	std::cout << "* p* *" << std::endl;
-	identify(*generate());
-	identify(*generate());
-	identify(*generate());
-
-	std::cout << "* p& *" << std::endl;
 	identify(generate());
-
+	identify(generate());
+	identify(generate());
+	std::cout <<std::endl;
+	std::cout << "* p& *" << std::endl;
+	identify(*generate());
+	identify(*generate());
+	identify(*generate());
 }
