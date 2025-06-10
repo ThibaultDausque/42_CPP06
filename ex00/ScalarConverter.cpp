@@ -132,7 +132,7 @@ void	ScalarConverter::convert(const std::string& literal)
 		return ;
 	if (obj.isChar(literal) == 1)
 	{
-		if (atoi(literal.c_str()) < 32 || atoi(literal.c_str()) > 126)
+		if (atoi(literal.c_str()) < 32 || atoi(literal.c_str()) > 126 || !obj.isIntFloatDouble(literal))
 			std::cout << "char: Non displayable" << std::endl;
 		else
 		{

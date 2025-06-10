@@ -19,12 +19,14 @@ int	main()
 	std::cout << "data int: " << data->age << std::endl;
 	std::cout << "data string: " << data->name << std::endl;
 	std::cout << std::endl;
-
+	
+	delete deserialize_data;
 	deserialize_data = Serializer::deserialize(serialize_data);
 	std::cout << "--- DESERIALIZE DATA ---" << std::endl;
 	std::cout << "Data adress: " << deserialize_data << std::endl;
 	std::cout << "data int: " << deserialize_data->age << std::endl;
 	std::cout << "data string: " << deserialize_data->name << std::endl;
 
+	delete data;
 	return 0;
 }

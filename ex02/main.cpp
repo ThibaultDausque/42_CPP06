@@ -40,6 +40,7 @@ void	identify(Base* p)
 		std::cout << "Type: C" << std::endl;
 	else
 		std::cout << "error: Type doesn't exist" << std::endl;
+	delete p;
 }
 
 void	identify(Base& p)
@@ -83,9 +84,14 @@ int	main()
 	identify(generate());
 	identify(generate());
 	identify(generate());
-	std::cout <<std::endl;
+	std::cout << std::endl;
 	std::cout << "* p& *" << std::endl;
-	identify(*generate());
-	identify(*generate());
-	identify(*generate());
+	Base*	A = generate();
+	identify(A);
+	Base*	B = generate();
+	identify(B);
+	Base*	C = generate();
+	identify(C);
+
+	return 0;
 }
