@@ -24,14 +24,15 @@ ScalarConverter&	ScalarConverter::operator=(const ScalarConverter& src)
 
 bool	ScalarConverter::isChar(std::string& arg)
 {
-	if (arg.size() != 1 && std::atoi(arg.c_str()) == 0)
+	int	idx = std::atoi(arg.c_str());
+
+	if (arg.size() != 1 && std::atoi(arg.c_str()) <= 0)
 		return false;
 	if (arg[0] >= 32 && arg[0] <= 126)
 		return true;
-	else if (std::atoi(arg.c_str()) != 0 && std::atoi(arg.c_str()) >= 32
-		&& std::atoi(arg.c_str()) <= 126)
+	else if (idx >= 32 && idx <= 126)
 		return true;
-	return true;
+	return false;
 }
 
 bool	ScalarConverter::isInt(std::string& arg)
@@ -101,8 +102,12 @@ void	ScalarConverter::convertType(std::string& arg)
 {
 	if (isChar(arg))
 	{
-		char c = static_cast<char>(arg[0]);
-		std::cout << "char: " << c << std::endl;
+		char	c;
+		if (std::atoi(arg.c_str()) != 0)
+			c = static_cast<char>(atoi(arg.c_str()));
+		else
+			c = static_cast<char>(arg[0]);
+		std::cout << "char: \'" << c << "\'" << std::endl;
 	}
 	else
 		std::cout << "char: Non displayable" << std::endl;
@@ -116,7 +121,7 @@ void	ScalarConverter::convertType(std::string& arg)
 	if (isFloat(arg))
 	{
 		float	ft = static_cast<float>(std::atof(arg.c_str()));
-		std::cout << "float: " << ft << std::endl;
+		std::cout << "float: " << ft << "f" << std::endl;
 	}
 	else
 		std::cout << "float: impossible" << std::endl;
