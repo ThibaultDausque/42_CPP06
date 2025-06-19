@@ -1,31 +1,28 @@
 CC = c++
-FLAGS = -Wall -Wextra -Werror -std=c++98
 SRCS = ScalarConverter.cpp \
 	   main.cpp
-RM = rm -rf
-OBJS_DIR = obj
+FLAGS = -Wall -Wextra -Werror -std=c++98
+RM = rm -f
+OBJS_DIR = objs
 OBJS = $(SRCS:%.cpp=$(OBJS_DIR)/%.o)
 
-NAME = converter
+NAME = convert
 
-all: $(NAME)
+all:$(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(FLAGS) $(OBJS) -o $(NAME)
+	@$(CC) $(FLAGS) $(OBJS) -o $(NAME)
 
-$(OBJS_DIR)/%.o:%.cpp
+$(OBJS_DIR)/%.o: %.cpp
 	@mkdir -p $(@D)
 	$(CC) $(FLAGS) -c $< -o $@
 
 clean:
-	@$(RM) $(NAME)
+	@rm -rf $(OBJS_DIR)
 
 fclean: clean
-	@$(RM) $(OBJS_DIR)
+	@$(RM) $(NAME)
 
-re : fclean $(NAME)
+re: fclean $(NAME)
 
-.PHONY: clean, fclean, re, all
-
-
-
+.PHONY: all clean fclean re

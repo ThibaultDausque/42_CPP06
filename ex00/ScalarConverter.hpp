@@ -3,29 +3,22 @@
 
 # include <iostream>
 # include <cstdlib>
-# include <iomanip>
+# include <string>
 
 class ScalarConverter
 {
 	private:
-		char	a;
-		int		b;
-		float	c;
-		double	d;
-
-	public:
 		ScalarConverter();
 		ScalarConverter(const ScalarConverter& cpy);
-		~ScalarConverter();
+
+	public:
 		ScalarConverter&	operator=(const ScalarConverter& src);
-		static void	convert(const std::string& literal);
-		char	getChar() const;
-		int		getInt() const;
-		float	getFloat() const;
-		double	getDouble() const;
-		int		isIntFloatDouble(const std::string& literal);
-		int		isChar(const std::string& literal);
-		int		pseudoLiterals(const std::string& literal);
+		~ScalarConverter();
+		static bool	isChar(std::string& arg);
+		static bool isInt(std::string& arg);
+		static bool	isFloat(std::string& arg);
+		static bool isDouble(std::string& arg);
+		static void	convertType(std::string& arg);
 };
 
 #endif
