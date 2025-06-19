@@ -25,13 +25,14 @@ ScalarConverter&	ScalarConverter::operator=(const ScalarConverter& src)
 bool	ScalarConverter::isChar(std::string& arg)
 {
 	int	idx = std::atoi(arg.c_str());
-
+	
 	if (arg.size() != 1 && std::atoi(arg.c_str()) <= 0)
 		return false;
-	if (arg[0] >= 32 && arg[0] <= 126)
+	if (idx < 32 || idx > 126)
+		return false;
+	else if (arg[0] >= 32 && arg[0] <= 126)
 		return true;
-	else if (idx >= 32 && idx <= 126)
-		return true;
+	
 	return false;
 }
 
@@ -40,6 +41,8 @@ bool	ScalarConverter::isInt(std::string& arg)
 	int		i;
 
 	i = 0;
+	if (arg[0] == '-')
+		i++;
 	while (arg[i])
 	{
 		if (arg[i] < 48 || arg[i] > 57)
@@ -54,6 +57,8 @@ bool	ScalarConverter::isFloat(std::string& arg)
 	int		i;
 
 	i = 0;
+	if (arg[0] == '-')
+		i++;
 	while (arg[i] && arg[i] != '.')
 	{
 		if (arg[i] < 48 || arg[i] > 57)
@@ -62,6 +67,7 @@ bool	ScalarConverter::isFloat(std::string& arg)
 	}
 	if (arg[i] == '.')
 	{
+		i++;
 		while (arg[i] && arg[i] != 'f')
 		{
 			if (arg[i] < 48 || arg[i] > 57)
@@ -80,6 +86,8 @@ bool	ScalarConverter::isDouble(std::string& arg)
 	int		i;
 
 	i = 0;
+	if (arg[0] == '-')
+		i++;
 	while (arg[i] && arg[i] != '.')
 	{
 		if (arg[i] < 48 || arg[i] > 57)
@@ -88,9 +96,10 @@ bool	ScalarConverter::isDouble(std::string& arg)
 	}
 	if (arg[i] == '.')
 	{
+		i++;
 		while (arg[i])
 		{
-			if (arg[i] < 48 || arg[i] > 57)
+			if ((arg[i] < 48 || arg[i] > 57) && arg[i] != 'f')
 				return false;
 			i++;
 		}
@@ -109,6 +118,9 @@ void	ScalarConverter::convertType(std::string& arg)
 			c = static_cast<char>(arg[0]);
 		std::cout << "char: \'" << c << "\'" << std::endl;
 	}
+	else if (arg == "+inf" || arg == "-inf" || arg == "nan"
+		|| arg == "+inff" || arg == "-inff" || arg == "nanf")
+		std::cout << "char: impossible" << std::endl;
 	else
 		std::cout << "char: Non displayable" << std::endl;
 	if (isInt(arg))
@@ -121,10 +133,13 @@ void	ScalarConverter::convertType(std::string& arg)
 	if (isFloat(arg))
 	{
 		float	ft = static_cast<float>(std::atof(arg.c_str()));
-		std::cout << "float: " << ft << "f" << std::endl;
+		std::cout << "float: " << std::fixed << std::setprecision(1) << ft << "f" << std::endl;
 	}
 	else
+	{
+		
 		std::cout << "float: impossible" << std::endl;
+	}
 	if (isDouble(arg))
 	{
 		double	db = static_cast<double>(std::atof(arg.c_str()));
@@ -134,4 +149,8 @@ void	ScalarConverter::convertType(std::string& arg)
 		std::cout << "double: impossible" << std::endl;
 }
 
+void	ScalarConverter::pseudoLiterals(std::string& arg)
+{
+	 if (arg == "-inf")
+}
 
