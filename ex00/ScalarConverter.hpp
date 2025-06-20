@@ -5,6 +5,7 @@
 # include <cstdlib>
 # include <string>
 # include <iomanip>
+#include <limits>
 
 class ScalarConverter
 {
@@ -20,7 +21,7 @@ class ScalarConverter
 		static bool	isFloat(std::string& arg);
 		static bool isDouble(std::string& arg);
 		static void	convertType(std::string& arg);
-		static void	pseudoLiterals(std::string& arg);
+		static bool	pseudoLiterals(std::string& arg, int flag);
 };
 
 #endif

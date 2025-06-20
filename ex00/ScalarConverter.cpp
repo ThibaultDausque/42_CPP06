@@ -22,34 +22,34 @@ ScalarConverter&	ScalarConverter::operator=(const ScalarConverter& src)
 	return *this;
 }
 
-bool	ScalarConverter::isChar(std::string& arg)
-{
-	int	idx = std::atoi(arg.c_str());
-	
-	if (arg.size() != 1 && std::atoi(arg.c_str()) <= 0)
-		return false;
-	if (idx < 32 || idx > 126)
-		return false;
-	else if (arg[0] >= 32 && arg[0] <= 126)
-		return true;
-	
-	return false;
-}
-
-bool	ScalarConverter::isInt(std::string& arg)
+int	isDigit(std::string& arg)
 {
 	int		i;
 
 	i = 0;
-	if (arg[0] == '-')
-		i++;
 	while (arg[i])
 	{
 		if (arg[i] < 48 || arg[i] > 57)
-			return false;
+			return 0;
 		i++;
 	}
-	return true;
+	return 1;
+}
+
+bool	ScalarConverter::isChar(std::string& arg)
+{
+	if (std::atoi(arg.c_str()) >= 32 && std::atoi(arg.c_str()) <= 126)
+		return true;
+	if ((arg.size() == 1 && (arg[0] < 32 || arg[0] > 126))
+		|| (isDigit(arg) && (std::atoi(arg.c_str()) < 32 || std::atoi(arg.c_str()) > 126)))
+	{
+		std::cout << "char: Non displayable" << std::endl;
+		return false;
+	}
+	else if (arg.size() == 1 && arg[0] >= 32 && arg[0] <= 126)
+		return true;
+	std::cout << "char: impossible" << std::endl;
+	return false;
 }
 
 bool	ScalarConverter::isFloat(std::string& arg)
@@ -109,21 +109,24 @@ bool	ScalarConverter::isDouble(std::string& arg)
 
 void	ScalarConverter::convertType(std::string& arg)
 {
+	int		flag;
+
 	if (isChar(arg))
 	{
 		char	c;
-		if (std::atoi(arg.c_str()) != 0)
-			c = static_cast<char>(atoi(arg.c_str()));
+
+		if (std::atoi(arg.c_str()) >= 32 && std::atoi(arg.c_str()) <= 126)
+		{
+			c = static_cast<char>(std::atoi(arg.c_str()));
+			std::cout << "char: \'" << c << "\'" << std::endl;
+		}
 		else
+		{
 			c = static_cast<char>(arg[0]);
-		std::cout << "char: \'" << c << "\'" << std::endl;
+			std::cout << "char: \'" << c << "\'" << std::endl;
+		}
 	}
-	else if (arg == "+inf" || arg == "-inf" || arg == "nan"
-		|| arg == "+inff" || arg == "-inff" || arg == "nanf")
-		std::cout << "char: impossible" << std::endl;
-	else
-		std::cout << "char: Non displayable" << std::endl;
-	if (isInt(arg))
+	if (isFloat(arg))
 	{
 		int nb = static_cast<int>(std::atoi(arg.c_str()));
 		std::cout << "int: " << nb << std::endl;
@@ -137,8 +140,9 @@ void	ScalarConverter::convertType(std::string& arg)
 	}
 	else
 	{
-		
-		std::cout << "float: impossible" << std::endl;
+		flag = 1;
+		if (!pseudoLiterals(arg, flag))
+			std::cout << "float: impossible" << std::endl;
 	}
 	if (isDouble(arg))
 	{
@@ -146,11 +150,51 @@ void	ScalarConverter::convertType(std::string& arg)
 		std::cout << "double: " << db << std::endl;
 	}
 	else
-		std::cout << "double: impossible" << std::endl;
+	{
+		flag = 2;
+		if (!pseudoLiterals(arg, flag))
+			std::cout << "double: impossible" << std::endl;
+	}
 }
 
-void	ScalarConverter::pseudoLiterals(std::string& arg)
+bool	ScalarConverter::pseudoLiterals(std::string& arg, int flag)
 {
-	 if (arg == "-inf")
+	if ((arg == "-inff" || arg == "-inf") && flag == 1)
+	{
+		float	neg_inf = -std::numeric_limits<float>::infinity();
+		std::cout << "float: " << neg_inf << "f" << std::endl;
+		return true;
+	}
+	else if ((arg == "+inff" || arg == "+inf") && flag == 1)
+	{
+		float	pos_inf = std::numeric_limits<float>::infinity();
+		std::cout << "float: " << pos_inf << "f" << std::endl;
+		return true;
+	}
+	else if ((arg == "nanf" || arg == "nan") && flag == 1)
+	{
+		float	nan_val = std::numeric_limits<float>::quiet_NaN();
+		std::cout << "float: " << nan_val << "f" << std::endl;
+		return true;
+	}
+	else if ((arg == "-inf" || arg == "-inff") && flag == 2)
+	{
+		double	db_ninf = -std::numeric_limits<double>::infinity();
+		std::cout << "double: " << db_ninf << std::endl;
+		return true;
+	}
+	else if ((arg == "+inf" || arg == "+inff") && flag == 2)
+	{
+		double	db_inf = std::numeric_limits<double>::infinity();
+		std::cout << "double: " << db_inf << std::endl;
+		return true;
+	}
+	else if ((arg == "nan" || arg == "nanf") && flag == 2)
+	{
+		double db_nan = std::numeric_limits<double>::quiet_NaN();
+		std::cout << "double: " << db_nan << std::endl;
+		return true;
+	}
+	return false;
 }
 
